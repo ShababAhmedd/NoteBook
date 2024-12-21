@@ -1,32 +1,44 @@
 import { Form, FormControl, Nav, Navbar, NavDropdown } from "react-bootstrap";
 import React from "react";
+import { Link } from "react-router-dom";
+import "./Header.css"; // Import the CSS file
 
 const Header = () => {
   return (
     <Navbar bg="dark" expand="lg" variant="dark">
-      <container>
-        <Navbar.Brand href="/">NoteBook</Navbar.Brand>
-        <Navbar.Toggle aria-controls="basic-navbar-nav" />
-        <Navbar.Collapse id="basic-navbar-nav">
-          <nav>
-            <Form inline>
-              <FormControl
-                type="text"
-                placeholder="Search"
-                className="mr-sm-2"
-              />
-            </Form>
-          </nav>
+      <div className="navbar-container">
+        {/* Left Aligned Section */}
+        <div className="navbar-left">
+          <Navbar.Brand>
+            <Link to="/" className="custom-link">
+              NoteBook
+            </Link>
+          </Navbar.Brand>
           <Nav>
-            <Nav.Link href="#home">MyNotes</Nav.Link>
-            <NavDropdown title="MashrurSafir" id="basic-nav-dropdown">
-              <NavDropdown.Item href="#action/3.1">MyProfile</NavDropdown.Item>
-              <NavDropdown.Divider />
-              <NavDropdown.Item href="#action/3.4">logout</NavDropdown.Item>
-            </NavDropdown>
+            <Nav.Link>
+              <Link to="/mynotes" className="custom-link">
+                MyNotes
+              </Link>
+            </Nav.Link>
           </Nav>
-        </Navbar.Collapse>
-      </container>
+        </div>
+
+        {/* Right Aligned Search Bar */}
+        <div className="navbar-right">
+          <Form>
+            <FormControl type="text" placeholder="Search" className="mr-sm-2" />
+          </Form>
+        </div>
+
+        {/* Dropdown */}
+        <Nav>
+          <NavDropdown title="MashrurSafir" id="basic-nav-dropdown">
+            <NavDropdown.Item href="#action/3.1">MyProfile</NavDropdown.Item>
+            <NavDropdown.Divider />
+            <NavDropdown.Item href="#action/3.4">Logout</NavDropdown.Item>
+          </NavDropdown>
+        </Nav>
+      </div>
     </Navbar>
   );
 };

@@ -1,0 +1,25 @@
+/* Header.css */
+.navbar-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.navbar-left {
+  display: flex;
+  align-items: center;
+}
+
+.navbar-right {
+  margin-left: auto;
+}
+
+.custom-link {
+  color: #ffffff; /* Same color as "MashrurSafir" */
+  text-decoration: none; /* Remove underline */
+}
+
+.custom-link:hover {
+  color: #d3d3d3; /* Optional hover effect */
+}
