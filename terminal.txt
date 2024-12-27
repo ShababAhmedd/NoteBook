@@ -1,0 +1,3 @@
+safir@safir:~/Desktop/notebook$ git add .
+safir@safir:~/Desktop/notebook$ git commit -m "backend frontend initialized"
+safir@safir:~/Desktop/notebook$ git push -u origin master
