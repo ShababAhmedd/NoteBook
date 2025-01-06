@@ -1,9 +1,15 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Container, Row } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import "./LandingPage.css";
 
 const LandingPage = () => {
+  // useEffect(() => {
+  //   const userInfo = localStorage.getItem("userInfo");
+  //   if (userInfo) {
+  //     navigate("/mynotes"); // Redirect if user is logged in
+  //   }
+  // }, [navigate]);
   return (
     <div className="main">
       <Container>
