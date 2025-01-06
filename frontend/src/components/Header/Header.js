@@ -1,9 +1,10 @@
 import { Form, FormControl, Nav, Navbar, NavDropdown } from "react-bootstrap";
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "./Header.css"; // Import the CSS file
 
 const Header = () => {
+  const navigate = useNavigate(); // Replaced useHistory with useNavigate
   return (
     <Navbar bg="dark" expand="lg" variant="dark">
       <div className="navbar-container">
@@ -35,7 +36,14 @@ const Header = () => {
           <NavDropdown title="MashrurSafir" id="basic-nav-dropdown">
             <NavDropdown.Item href="#action/3.1">MyProfile</NavDropdown.Item>
             <NavDropdown.Divider />
-            <NavDropdown.Item href="#action/3.4">Logout</NavDropdown.Item>
+            <NavDropdown.Item
+              onClick={() => {
+                localStorage.removeItem("userInfo");
+                navigate("/login"); // Replaced history.push with navigate
+              }}
+            >
+              Logout
+            </NavDropdown.Item>
           </NavDropdown>
         </Nav>
       </div>
