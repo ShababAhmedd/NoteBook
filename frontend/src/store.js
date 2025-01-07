@@ -1,26 +1,27 @@
-import { createStore, combineReducers, applyMiddleware, compose } from "redux";
-import { thunk } from "redux-thunk"; // Change from default import to named import
-import { composeWithDevTools } from "redux-devtools-extension";
-import { userLoginReducer } from "./reducers/userReducers";
+import { configureStore } from "@reduxjs/toolkit";
+import { userLoginReducer, userRegisterReducer } from "./reducers/userReducers";
 
-// Combine your reducers (leave it empty if you don't have reducers yet)
-const reducer = combineReducers({
+// Combine reducers
+const reducer = {
   userLogin: userLoginReducer,
-});
+  userRegister: userRegisterReducer,
+};
 
-const initialState = {};
+// Get user info from localStorage
+const userInfoFromStorage = localStorage.getItem("userInfo")
+  ? JSON.parse(localStorage.getItem("userInfo"))
+  : null;
 
-// Define middleware
-const middleware = [thunk];
+// Set initial state
+const initialState = {
+  userLogin: { userInfo: userInfoFromStorage },
+};
 
-// Check if window.__REDUX_DEVTOOLS_EXTENSION__ is available and apply it if necessary
-const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
-
-// Create the store, using composeEnhancers with applyMiddleware
-const store = createStore(
+// Configure store
+const store = configureStore({
   reducer,
-  initialState,
-  composeEnhancers(applyMiddleware(...middleware)) // Correct usage of composeEnhancers
-);
+  preloadedState: initialState,
+  devTools: process.env.NODE_ENV !== "production", // Enable Redux DevTools in non-production environments
+});
 
 export default store;
