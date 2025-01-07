@@ -2,9 +2,20 @@ import { Form, FormControl, Nav, Navbar, NavDropdown } from "react-bootstrap";
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "./Header.css"; // Import the CSS file
+import { useDispatch, useSelector } from "react-redux";
+import { logout } from "../../actions/userActions";
 
 const Header = () => {
   const navigate = useNavigate(); // Replaced useHistory with useNavigate
+  const dispatch = useDispatch();
+
+  const userLogin = useSelector((state) => state.userLogin);
+  const { userInfo } = userLogin;
+
+  const logoutHandler = () => {
+    dispatch(logout());
+    navigate("/login");
+  };
   return (
     <Navbar bg="dark" expand="lg" variant="dark">
       <div className="navbar-container">
@@ -38,8 +49,7 @@ const Header = () => {
             <NavDropdown.Divider />
             <NavDropdown.Item
               onClick={() => {
-                localStorage.removeItem("userInfo");
-                navigate("/login"); // Replaced history.push with navigate
+                logoutHandler(); // Replaced history.push with navigate
               }}
             >
               Logout
