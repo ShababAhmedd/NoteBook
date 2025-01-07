@@ -1,10 +1,11 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import MainScreen from "../../components/MainScreen";
 import { Form, Button, Row, Col } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import "./RegisterScreen.css";
-import axios from "axios";
+import { useDispatch, useSelector } from "react-redux";
+import { register } from "../../actions/userActions";
 import Loading from "../../components/Loading";
 import ErrorMessage from "../../components/ErrorMessage";
 
@@ -13,85 +14,70 @@ const RegisterScreen = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [error, setError] = useState(false);
-  const [loading, setLoading] = useState(false);
 
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
-  const submitHandler = async (e) => {
-    e.preventDefault();
-    console.log(email);
+  const userRegister = useSelector((state) => state.userRegister);
+  const { loading, error, userInfo } = userRegister;
 
-    if (password !== confirmPassword) {
-      setError("Passwords do not match");
-      return;
-    }
-
-    try {
-      const config = {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      };
-      setLoading(true);
-      const { data } = await axios.post(
-        "/api/users/",
-        { name, email, password },
-        config
-      );
-
-      localStorage.setItem("us erInfo", JSON.stringify(data));
-      setLoading(false);
+  useEffect(() => {
+    if (userInfo) {
       navigate("/mynotes");
-    } catch (error) {
-      setError(error.response?.data?.message || "An error occurred");
-      setLoading(false);
+    }
+  }, [navigate, userInfo]);
+
+  const submitHandler = (e) => {
+    e.preventDefault();
+    if (password !== confirmPassword) {
+      alert("Passwords do not match");
+    } else {
+      dispatch(register(name, email, password));
     }
   };
 
   return (
     <MainScreen title="REGISTER">
-      <div className="registerContainer">
+      <div className="form-container">
         {error && <ErrorMessage variant="danger">{error}</ErrorMessage>}
         {loading && <Loading />}
-
         <Form onSubmit={submitHandler}>
-          <Form.Group controlId="formBasicName">
+          <Form.Group controlId="formName" className="mb-3">
             <Form.Label>Name</Form.Label>
             <Form.Control
               type="text"
-              value={name}
               placeholder="Enter your name"
+              value={name}
               onChange={(e) => setName(e.target.value)}
             />
           </Form.Group>
 
-          <Form.Group controlId="formBasicEmail">
+          <Form.Group controlId="formEmail" className="mb-3">
             <Form.Label>Email address</Form.Label>
             <Form.Control
               type="email"
-              value={email}
               placeholder="Enter email"
+              value={email}
               onChange={(e) => setEmail(e.target.value)}
             />
           </Form.Group>
 
-          <Form.Group controlId="formBasicPassword">
+          <Form.Group controlId="formPassword" className="mb-3">
             <Form.Label>Password</Form.Label>
             <Form.Control
               type="password"
-              value={password}
               placeholder="Enter password"
+              value={password}
               onChange={(e) => setPassword(e.target.value)}
             />
           </Form.Group>
 
-          <Form.Group controlId="formBasicConfirmPassword">
+          <Form.Group controlId="formConfirmPassword" className="mb-3">
             <Form.Label>Confirm Password</Form.Label>
             <Form.Control
               type="password"
-              value={confirmPassword}
               placeholder="Confirm your password"
+              value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
             />
           </Form.Group>
@@ -99,20 +85,20 @@ const RegisterScreen = () => {
           <Button
             type="submit"
             variant="dark"
-            className="btn-lg"
+            className="submit-button"
             disabled={loading}
           >
-            {loading ? "Loading..." : "Register"}
+            {loading ? "Loading..." : "Submit"}
           </Button>
         </Form>
 
-        <Row className="py-3">
-          <Col className="text-center">
-            <p>Have an account?</p>
+        <Row className="py-3 text-center">
+          <Col>
+            <p>Already have an account?</p>
             <Link to="/login">
-              <button type="button" className="btn btn-outline-dark btn-lg">
+              <Button variant="outline-dark" className="submit-button">
                 Login Here
-              </button>
+              </Button>
             </Link>
           </Col>
         </Row>
