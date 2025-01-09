@@ -1,31 +1,29 @@
-import React, { useEffect } from "react";
-import { useNavigate } from "react-router-dom"; // Import useNavigate
-import MainScreen from "../../components/MainScreen";
+import React, { useState, useEffect } from "react";
 import { Form, Button, Row, Col } from "react-bootstrap";
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import "./LoginScreen.css";
 import Loading from "../../components/Loading";
 import ErrorMessage from "../../components/ErrorMessage";
-import { useDispatch, useSelector } from "react-redux";
 import { login } from "../../actions/userActions";
+import MainScreen from "../../components/MainScreen";
+import "./LoginScreen.css";
 
-const LoginScreen = () => {
-  const [email, setEmail] = React.useState("");
-  const [password, setPassword] = React.useState("");
+function LoginScreen({ history }) {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
   const dispatch = useDispatch();
-  const navigate = useNavigate();
 
   const userLogin = useSelector((state) => state.userLogin);
   const { loading, error, userInfo } = userLogin;
 
   useEffect(() => {
     if (userInfo) {
-      navigate("/mynotes");
+      history.push("/mynotes");
     }
-  }, [navigate, userInfo]);
+  }, [history, userInfo]);
 
-  const submitHandler = async (e) => {
+  const submitHandler = (e) => {
     e.preventDefault();
     dispatch(login(email, password));
   };
@@ -35,7 +33,6 @@ const LoginScreen = () => {
       <div className="loginContainer">
         {error && <ErrorMessage variant="danger">{error}</ErrorMessage>}
         {loading && <Loading />}
-
         <Form onSubmit={submitHandler}>
           <Form.Group controlId="formBasicEmail">
             <Form.Label>Email address</Form.Label>
@@ -47,8 +44,6 @@ const LoginScreen = () => {
             />
           </Form.Group>
 
-          <div className="mb-3"></div>
-
           <Form.Group controlId="formBasicPassword">
             <Form.Label>Password</Form.Label>
             <Form.Control
@@ -59,30 +54,18 @@ const LoginScreen = () => {
             />
           </Form.Group>
 
-          <div className="mb-3"></div>
-
-          <button
-            type="submit"
-            className="btn btn-outline-dark btn-lg"
-            disabled={loading}
-          >
-            {loading ? "Loading..." : "Submit"}
-          </button>
+          <Button variant="primary" type="submit">
+            Submit
+          </Button>
         </Form>
-
         <Row className="py-3">
-          <Col className="text-center">
-            <p>Not Registered?</p>
-            <Link to="/register">
-              <button type="button" className="btn btn-outline-dark btn-lg">
-                Register Here
-              </button>
-            </Link>
+          <Col>
+            New Customer ? <Link to="/register">Register Here</Link>
           </Col>
         </Row>
       </div>
     </MainScreen>
   );
-};
+}
 
 export default LoginScreen;

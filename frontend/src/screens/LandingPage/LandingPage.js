@@ -1,35 +1,42 @@
 import React, { useEffect } from "react";
-import { Container, Row } from "react-bootstrap";
+import { Button, Container, Row } from "react-bootstrap";
+import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import "./LandingPage.css";
+import "./LandingStyles.css";
 
-const LandingPage = () => {
-  // useEffect(() => {
-  //   const userInfo = localStorage.getItem("userInfo");
-  //   if (userInfo) {
-  //     navigate("/mynotes"); // Redirect if user is logged in
-  //   }
-  // }, [navigate]);
+function LandingPage({ history }) {
+  const userLogin = useSelector((state) => state.userLogin);
+  const { userInfo } = userLogin;
+
+  useEffect(() => {
+    if (userInfo) {
+      history.push("/mynotes");
+    }
+  }, [history, userInfo]);
+
   return (
     <div className="main">
       <Container>
         <Row>
           <div className="intro-text">
             <div>
-              <h1 className="title">Welcome to NoteBook</h1>
-              <p className="subtitle">A project done for CSE470</p>
-              <p>Group08 Fall'24</p>
+              <h1 className="title">Welcome to Note Zipper</h1>
+              <p className="subtitle">One Safe place for all your notes.</p>
             </div>
             <div className="buttonContainer">
               <Link to="/login">
-                <button type="button" className="btn btn-outline-dark btn-lg">
+                <Button size="lg" className="landingbutton">
                   Login
-                </button>
+                </Button>
               </Link>
               <Link to="/register">
-                <button type="button" className="btn btn-outline-dark btn-lg">
+                <Button
+                  variant="outline-primary"
+                  size="lg"
+                  className="landingbutton"
+                >
                   Signup
-                </button>
+                </Button>
               </Link>
             </div>
           </div>
@@ -37,6 +44,6 @@ const LandingPage = () => {
       </Container>
     </div>
   );
-};
+}
 
 export default LandingPage;

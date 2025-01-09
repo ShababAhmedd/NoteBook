@@ -1,34 +1,5 @@
-.form-container {
-  max-width: 600px; /* Increased width */
-  margin: 20px auto;
-  background-color: #000;
-  padding: 20px;
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-}
-
-.form-container form {
-  margin: 0 auto;
-}
-
-.form-container .form-label {
-  color: #fff;
-  font-weight: bold; /* Makes the labels bold */
-}
-
-.form-container .form-control {
-  margin-bottom: 15px; /* Adds spacing between fields */
-}
-
-.submit-button {
-  width: 100%; /* Full-width button */
-  margin-top: 15px;
-}
-
-.form-container .text-center {
-  margin-top: 20px;
-}
-
-.form-container .text-center p {
-  color: #fff;
+.loginContainer {
+  display: flex;
+  flex-direction: column;
+  margin: 20px;
 }

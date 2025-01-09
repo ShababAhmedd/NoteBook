@@ -1,18 +1,18 @@
-import { sanitizeFilter } from "mongoose";
-import { spinner } from "react-bootstrap";
+import React from "react";
+import { Spinner } from "react-bootstrap";
 
-const Loading = ({ size = 100 }) => {
+function Loading({ size = 100 }) {
   return (
     <div
       style={{
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
-        weidth: "100%",
+        width: "100%",
         height: "100%",
       }}
     >
-      <spinner
+      <Spinner
         style={{
           width: size,
           height: size,
@@ -21,6 +21,6 @@ const Loading = ({ size = 100 }) => {
       />
     </div>
   );
-};
+}
 
 export default Loading;
