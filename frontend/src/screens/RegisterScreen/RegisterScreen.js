@@ -15,7 +15,7 @@ function RegisterScreen({ history }) {
   const [password, setPassword] = useState("");
   const [confirmpassword, setConfirmPassword] = useState("");
   const [message, setMessage] = useState(null);
-  const [picMessage, setPicMessage] = useState(null);
+
 
   const dispatch = useDispatch();
 
@@ -34,7 +34,7 @@ function RegisterScreen({ history }) {
 
     if (password !== confirmpassword) {
       setMessage("Passwords do not match");
-    } else dispatch(register(name, email, password, pic));
+    } else dispatch(register(name, email, password));
   };
 
   return (
@@ -83,10 +83,6 @@ function RegisterScreen({ history }) {
               onChange={(e) => setConfirmPassword(e.target.value)}
             />
           </Form.Group>
-
-          {picMessage && (
-            <ErrorMessage variant="danger">{picMessage}</ErrorMessage>
-          )}
           
 
           <Button variant="primary" type="submit">
