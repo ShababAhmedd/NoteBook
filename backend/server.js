@@ -1,11 +1,13 @@
 // importing
 const express = require("express");
 const notes = require("./data/notes");
+const {getNotes} = require("./controllers/noteController");
 const dotenv = require("dotenv");
 const connectDB = require("./config/db");
 const userRoutes = require("./routes/userRoutes");
 const noteRoutes = require("./routes/noteRoutes");
 const { notFound, errorHandler } = require("./middleware/errorMiddleware");
+
 
 const app = express(); // object of the imported package
 dotenv.config();
@@ -16,9 +18,7 @@ app.get("/", (req, res) => {
   res.send("API is running..");
 });
 
-app.get("/api/notes", (req, res) => {
-  res.json(notes);
-});
+app.get("/api/notes", getNotes);
 
 app.get("/api/notes/:id", (req, res) => {
   const note = notes.find((n) => n._id === req.params.id);
