@@ -1,8 +1,33 @@
-const asyncHandler = require("express-async-handler");
-const User = require("../models/userModel");
-const generateToken = require("../utils/generateToken");
+import asyncHandler from "express-async-handler";
+import User from "../models/userModel.js";
+import generateToken from "../utils/generateToken.js";
 
+//@description     Auth the user
+//@route           POST /api/users/login
+//@access          Public
+const authUser = asyncHandler(async (req, res) => {
+  const { email, password } = req.body;
 
+  const user = await User.findOne({ email });
+
+  if (user && (await user.matchPassword(password))) {
+    res.json({
+      _id: user._id,
+      name: user.name,
+      email: user.email,
+      isAdmin: user.isAdmin,
+      pic: user.pic,
+      token: generateToken(user._id),
+    });
+  } else {
+    res.status(401);
+    throw new Error("Invalid Email or Password");
+  }
+});
+
+//@description     Register new user
+//@route           POST /api/users/
+//@access          Public
 const registerUser = asyncHandler(async (req, res) => {
   const { name, email, password, pic } = req.body;
 
@@ -35,26 +60,9 @@ const registerUser = asyncHandler(async (req, res) => {
   }
 });
 
-const authUser = asyncHandler(async (req, res) => {
-  const { email, password } = req.body;
-
-  const user = await User.findOne({ email });
-
-  if (user && (await user.matchPassword(password))) {
-    res.json({
-      _id: user._id,
-      name: user.name,
-      email: user.email,
-      isAdmin: user.isAdmin,
-      pic: user.pic,
-      token: generateToken(user._id),
-    });
-  } else {
-    res.status(401);
-    throw new Error("Invalid Email or Password");
-  }
-});
-
+// @desc    GET user profile
+// @route   GET /api/users/profile
+// @access  Private
 const updateUserProfile = asyncHandler(async (req, res) => {
   const user = await User.findById(req.user._id);
 
@@ -82,4 +90,4 @@ const updateUserProfile = asyncHandler(async (req, res) => {
   }
 });
 
-module.exports = { registerUser, authUser, updateUserProfile };
+export { authUser, updateUserProfile, registerUser };
